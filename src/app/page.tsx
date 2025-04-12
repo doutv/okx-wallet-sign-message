@@ -96,6 +96,16 @@ export default function Home() {
             </div>
           )}
         </div>
+        <div className="mt-6 text-center">
+          <a
+            href="https://github.com/doutv/okx-wallet-sign-message"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-gray-500 hover:text-gray-700"
+          >
+            Verify source code on GitHub
+          </a>
+        </div>
       </div>
     </div>
   );
