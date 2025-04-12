@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react";
 import { OKXUniversalConnectUI } from "@okxconnect/ui";
+import { OKXBtcProvider } from "@okxconnect/universal-provider";
 
 export default function Home() {
   const [message, setMessage] = useState("");
@@ -21,36 +22,27 @@ export default function Home() {
         },
         language: "en_US",
       });
+      const okxBtcProvider = new OKXBtcProvider(okxUniversalConnectUI)
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      okxUniversalConnectUI.on("connect_signResponse", (signResponse: any) => {
-        if (signResponse && signResponse[0] && signResponse[0].result) {
-          setSignature(signResponse[0].result);
-        }
-        setIsLoading(false);
-      });
-
-      await okxUniversalConnectUI.openModalAndSign(
-        {
-          namespaces: {
-            btc: {
-              chains: ["btc:mainnet"],
+      if (!okxUniversalConnectUI.connected()) {
+        await okxUniversalConnectUI.openModal(
+          {
+            namespaces: {
+              btc: {
+                chains: ["btc:mainnet"],
+              },
+            },
+            sessionConfig: {
+              redirect: "tg://resolve"
             }
           },
-          sessionConfig: {
-            redirect: "tg://resolve"
-          }
-        },
-        [
-          {
-            method: "btc_signMessage",
-            chainId: "btc:mainnet",
-            params: {
-              message: message
-            }
-          }
-        ]
-      );
+        );
+      }
+
+      const result = await okxBtcProvider.signMessage("btc:mainnet", message)
+      console.log(result)
+      setSignature(result as string)
+      setIsLoading(false)
     } catch (error) {
       console.error("Signing error:", error);
       setIsLoading(false);
@@ -61,7 +53,7 @@ export default function Home() {
     <div className="min-h-screen p-8 flex flex-col items-center justify-center bg-gray-50">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-center mb-6">OKX Message Signer</h1>
-        
+
         <div className="space-y-4">
           <div className="bg-yellow-50 p-4 rounded-md mb-4">
             <h2 className="text-sm font-medium text-yellow-800 mb-2">Security Notice</h2>

@@ -1,6 +1,8 @@
 # OKX Wallet Message Signer
 
-Sign custom messages using your OKX wallet.
+Sign custom messages using your OKX wallet. 
+
+Supported network: BTC
 
 Use cases:
 - Withdraw crypto on Hashkey. Sign a custom message to verify address owner.
