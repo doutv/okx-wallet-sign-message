@@ -1,6 +1,11 @@
 # OKX Wallet Message Signer
 
-A web application that allows users to sign custom messages using their OKX wallet.
+Sign custom messages using your OKX wallet.
+
+Use cases:
+- Withdraw crypto on Hashkey. Sign a custom message to verify address owner.
+
+Simple and Safe. Review code by yourself.
 
 ## Features
 
@@ -29,8 +34,3 @@ A web application that allows users to sign custom messages using their OKX wall
    npm run dev
    ```
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## Prerequisites
-
-- OKX Wallet browser extension installed
-- Modern web browser with Web3 support
