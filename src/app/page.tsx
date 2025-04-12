@@ -3,7 +3,7 @@ import { useState } from "react";
 import { OKXUniversalConnectUI } from "@okxconnect/ui";
 
 export default function Home() {
-  const [message, setMessage] = useState("Welcome to BTC");
+  const [message, setMessage] = useState("");
   const [signature, setSignature] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,10 +22,11 @@ export default function Home() {
         language: "en_US",
       });
 
-      // Add signature result listener
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       okxUniversalConnectUI.on("connect_signResponse", (signResponse: any) => {
-        console.log(signResponse);
-        setSignature(signResponse[0].result);
+        if (signResponse && signResponse[0] && signResponse[0].result) {
+          setSignature(signResponse[0].result);
+        }
         setIsLoading(false);
       });
 
@@ -62,6 +63,15 @@ export default function Home() {
         <h1 className="text-2xl font-bold text-center mb-6">OKX Message Signer</h1>
         
         <div className="space-y-4">
+          <div className="bg-yellow-50 p-4 rounded-md mb-4">
+            <h2 className="text-sm font-medium text-yellow-800 mb-2">Security Notice</h2>
+            <ul className="text-sm text-yellow-700 list-disc list-inside space-y-1">
+              <li>Only sign messages you trust and understand</li>
+              <li>Verify the message content in your OKX wallet before signing</li>
+              <li>Never share your private keys or seed phrase</li>
+            </ul>
+          </div>
+
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
               Message to Sign
@@ -88,6 +98,9 @@ export default function Home() {
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
               <h2 className="text-sm font-medium text-gray-700 mb-2">Signature:</h2>
               <p className="text-sm break-all font-mono">{signature}</p>
+              <p className="text-xs text-gray-500 mt-2">
+                This signature proves you own the private key that signed this message.
+              </p>
             </div>
           )}
         </div>
